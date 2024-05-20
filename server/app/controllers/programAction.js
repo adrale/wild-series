@@ -23,12 +23,40 @@ const programs = [
   },
 ];
 
-// Delare the action 
+// Delare the action
 
-const browse = (req, res) =>  {
-  res.json(programs)
-}
+const browse = (req, res) => {
+  if (req.query.q != null) {
+    const filteredPrograms = programs.filter(
+      (program) =>
+        // Filtrer par mot dans le synopsis
+        program.synopsis.includes(req.query.q)
+
+        // Filtrer par country
+        // program.country.includes(req.query.q)
+
+        // Filtrer par year | '10' = paramètre radix décimale
+        // program.year === parseInt(req.query.q, 10)
+    );
+    res.json(filteredPrograms);
+  } else {
+    res.json(programs);
+  }
+};
+
+const read = (req, res) => {
+  console.info(req.params);
+  const parseId = parseInt(req.params.id, 10)
+
+  const program = programs.find((p) => p.id === parseId) 
+  
+  if (program != null) {
+    res.json(program)
+  } else {
+    res.sendStatus(404);
+  }
+};
 
 // Export it to import it somewhere else
 
-module.exports = {browse}
+module.exports = { browse, read };

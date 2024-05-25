@@ -1,3 +1,5 @@
+const tables = require('../../database/tables')
+
 // Some data to make the trick
 
 const categories = [
@@ -13,9 +15,10 @@ const categories = [
 
 // Declare the actions
 
-const browse = (req, res) => {
-  res.json(categories);
-};
+const browse = async (req, res) => {
+  const categoriesFromDB = await tables.category.readAll();
+  res.json(categoriesFromDB);
+}
 
 const read = (req, res) => {
   const parseId = parseInt(req.params.id, 10);

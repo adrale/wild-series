@@ -1,3 +1,5 @@
+const tables = require('../../database/tables')
+
 // Some data to make the trick
 
 const programs = [
@@ -25,24 +27,30 @@ const programs = [
 
 // Delare the action
 
-const browse = (req, res) => {
-  if (req.query.q != null) {
-    const filteredPrograms = programs.filter(
-      (program) =>
-        // Filtrer par mot dans le synopsis
-        program.synopsis.includes(req.query.q)
+// const browse = (req, res) => {
+//   if (req.query.q != null) {
+//     const filteredPrograms = programs.filter(
+//       (program) =>
+//         // Filtrer par mot dans le synopsis
+//         program.synopsis.includes(req.query.q)
 
-        // Filtrer par country
-        // program.country.includes(req.query.q)
+//         // Filtrer par country
+//         // program.country.includes(req.query.q)
 
-        // Filtrer par year | '10' = paramètre radix décimale
-        // program.year === parseInt(req.query.q, 10)
-    );
-    res.json(filteredPrograms);
-  } else {
-    res.json(programs);
-  }
-};
+//         // Filtrer par year | '10' = paramètre radix décimale
+//         // program.year === parseInt(req.query.q, 10)
+//     );
+//     res.json(filteredPrograms);
+//   } else {
+//     res.json(programs);
+//   }
+// };
+
+// Challenge_06
+const browse = async (req, res) => {
+  const programFromDB = await tables.program.readAll()
+  res.json(programFromDB)
+}
 
 const read = (req, res) => {
   console.info(req.params);
